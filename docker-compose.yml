@@ -1,0 +1,51 @@
+# Use postgres/example user/password credentials
+version: '3'
+
+services:
+  db:
+    image: postgres:14-bullseye
+    # restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    container_name: sqlwarehouse
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+
+  bucket:
+    image: minio/minio
+    # restart: always
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: ${S3_USERNAME}
+      MINIO_ROOT_PASSWORD: ${S3_PASSWORD}
+    container_name: s3warehouse
+    volumes:
+      - ./minio:/data
+    command: server --console-address ":9001" /data
+
+  # volumes:
+  #   minio_storage: {}
+
+  # bucket:
+  #   image: minio/minio
+  #   container_name: bucketminio
+  #   ports:
+  #     - '9000:9000'
+  #   environment:
+  #     - MINIO_ROOT_USER=ROOTUSER
+  #     - MINIO_ROOT_PASSWORD=CHANGEME123
+  #   command: server /data
+  #   volumes:
+  #     - ./minio:/minio/data
+
+  # adminer:
+  #   image: adminer:4.7.9-standalone
+  #   container_name: admteslo
+  #   # restart: always
+  #   ports:
+  #     - 8088:8080
