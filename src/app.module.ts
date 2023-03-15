@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { EnvConfiguration, JoiValidationSchema } from './config';
+import { StorageModule } from './storage/storage.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -15,6 +17,10 @@ import { EnvConfiguration, JoiValidationSchema } from './config';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
+
+    StorageModule,
+
+    CommonModule,
   ],
 })
 export class AppModule {}
