@@ -2,17 +2,28 @@
 version: '3'
 
 services:
-  db:
-    image: postgres:14-bullseye
+  mariadb:
+    image: mariadb:10.7-focal
     # restart: always
     ports:
-      - '5432:5432'
+      - '3306:3306'
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
     container_name: sqlwarehouse
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ./mariadb:/var/lib/mysql
+
+  phpmyadmin:
+    image: linuxserver/phpmyadmin:5.2.1
+    # restart: always
+    ports:
+      - 8082:80
+    environment:
+      - PMA_HOST=mariadb
+    container_name: phpmyadmin
+    depends_on:
+      - mariadb
 
   bucket:
     image: minio/minio
@@ -27,6 +38,31 @@ services:
     volumes:
       - ./minio:/data
     command: server --console-address ":9001" /data
+    depends_on:
+      - mariadb
+
+  # phpadminer:
+  #   image: adminer
+  #   # restart: always
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #     - PMA_HOST=mariadb
+  #   container_name: phpadminer
+  # depends_on:
+  #   - mariadb
+
+  # db:
+  #   image: postgres:14-bullseye
+  #   # restart: always
+  #   ports:
+  #     - '5432:5432'
+  #   environment:
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     POSTGRES_DB: ${DB_NAME}
+  #   container_name: sqlwarehouse
+  #   volumes:
+  #     - ./postgres:/var/lib/postgresql/data
 
   # volumes:
   #   minio_storage: {}

@@ -1,9 +1,19 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 const apipath = 'api/v1';
+
+async function documentApi(app: INestApplication, apipath: string) {
+  const config = new DocumentBuilder()
+    .setTitle('warehouse apirest')
+    .setDescription('Warehouse end point')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup(`${apipath}/doc`, app, document);
+}
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -17,13 +27,7 @@ async function bootstrap() {
     }),
   );
 
-  const config = new DocumentBuilder()
-    .setTitle('warehouse apirest')
-    .setDescription('Warehouse end point')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(`${apipath}/doc`, app, document);
+  await documentApi(app, apipath);
 
   const portRunning = process.env.PORT;
   await app.listen(portRunning);
