@@ -10,5 +10,6 @@ import { AuthModule } from 'src/auth';
   imports: [ConfigModule, TypeOrmModule.forFeature([Storage]), AuthModule],
   controllers: [StorageController],
   providers: [StorageService],
+  exports: [StorageService],
 })
 export class StorageModule {}

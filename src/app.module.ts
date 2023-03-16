@@ -10,6 +10,7 @@ import { CommonModule } from './common/common.module';
 import { StorageModule } from './storage/storage.module';
 import { AuthModule } from './auth/auth.module';
 import { Storage } from './storage/entities';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -40,6 +41,8 @@ import { Storage } from './storage/entities';
     StorageModule,
 
     AuthModule,
+
+    SeedModule,
   ],
 })
 export class AppModule {}
