@@ -5,9 +5,4 @@ export class CreateStorageDto {
   @IsString()
   @MinLength(2)
   name: string;
-
-  @IsBoolean()
-  @IsOptional()
-  @Type(() => Boolean)
-  active?: boolean;
 }

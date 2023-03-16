@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { EnvConfiguration, JoiValidationSchema } from './config';
 import { CommonModule } from './common/common.module';
 import { StorageModule } from './storage/storage.module';
+import { AuthModule } from './auth/auth.module';
+import { Storage } from './storage/entities';
 
 @Module({
   imports: [
@@ -24,7 +26,7 @@ import { StorageModule } from './storage/storage.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [],
+      entities: [Storage],
       autoLoadEntities: true,
       synchronize: true,
     }),
@@ -36,6 +38,8 @@ import { StorageModule } from './storage/storage.module';
     CommonModule,
 
     StorageModule,
+
+    AuthModule,
   ],
 })
 export class AppModule {}

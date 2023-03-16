@@ -15,7 +15,7 @@ export class Storage {
   name: string;
 
   @Column({ type: 'boolean', default: true })
-  active: boolean;
+  isActive: boolean;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
   created_at: Date;

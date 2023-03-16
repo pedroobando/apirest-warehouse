@@ -13,13 +13,18 @@ import { StorageService } from './storage.service';
 import { CreateStorageDto } from './dto/create-storage.dto';
 import { UpdateStorageDto } from './dto/update-storage.dto';
 import { PaginationStorageDto } from './dto';
+import { Auth, GetUser } from 'src/auth/decorators';
+import { User } from 'src/auth/entities';
+import { ValidRoles } from 'src/auth/interfaces';
 
 @Controller('storage')
+@Auth() //Todo usuario debe estar authenticated
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
   @Post()
-  create(@Body() createStorageDto: CreateStorageDto) {
+  @Auth(ValidRoles.admin)
+  create(@Body() createStorageDto: CreateStorageDto, @GetUser() user: User) {
     return this.storageService.create(createStorageDto);
   }
 
@@ -34,6 +39,7 @@ export class StorageController {
   }
 
   @Patch(':id')
+  @Auth(ValidRoles.admin)
   update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() updateStorageDto: UpdateStorageDto,

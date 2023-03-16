@@ -48,7 +48,7 @@ export class StorageService {
     let storageBuilder = this.storageRepository.createQueryBuilder();
 
     if (onlyActive) {
-      storageBuilder = storageBuilder.where('active = true');
+      storageBuilder = storageBuilder.where('isActive');
     }
 
     // if (gender) {
@@ -95,11 +95,8 @@ export class StorageService {
   }
 
   async update(id: string, updateStorageDto: UpdateStorageDto) {
-    console.log(updateStorageDto);
     const storage = await this.storageRepository.preload({ id, ...updateStorageDto });
-
     if (!storage) throw new BadRequestException(`Storage with id: ${id} not found`);
-
     try {
       return await this.storageRepository.save(storage);
     } catch (error) {
@@ -108,13 +105,10 @@ export class StorageService {
   }
 
   async activated(id: string, isActive: { active: boolean }) {
-    const { active } = isActive;
     const storage = await this.storageRepository.preload({ id });
     if (!storage) throw new BadRequestException(`Storage with id: ${id} not found`);
-    storage.active = active.valueOf();
+    storage.isActive = isActive.active;
     try {
-      console.log(storage);
-
       return await this.storageRepository.save(storage);
     } catch (error) {
       this.handleDBExeptions(error);
