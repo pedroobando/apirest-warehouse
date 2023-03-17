@@ -104,10 +104,10 @@ export class StorageService {
     }
   }
 
-  async activated(id: string, isActive: { active: boolean }) {
+  async activated(id: string) {
     const storage = await this.storageRepository.preload({ id });
     if (!storage) throw new BadRequestException(`Storage with id: ${id} not found`);
-    storage.isActive = isActive.active;
+    storage.isActive = !storage.isActive;
     try {
       return await this.storageRepository.save(storage);
     } catch (error) {
@@ -120,7 +120,7 @@ export class StorageService {
     await this.storageRepository.remove(storage);
   }
 
-  async deleteAllStorages() {
+  async deleteAll() {
     const queryStorage = this.storageRepository.createQueryBuilder('storage');
 
     try {
@@ -131,8 +131,8 @@ export class StorageService {
   }
 
   private handleDBExeptions(error: any): never {
-    if (error.code === '23505') {
-      throw new BadRequestException(error.detail);
+    if (error.code === 'ER_DUP_ENTRY') {
+      throw new BadRequestException(error.sqlMessage);
     }
 
     this.logger.error(error);

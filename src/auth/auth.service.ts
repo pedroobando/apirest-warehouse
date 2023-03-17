@@ -129,6 +129,10 @@ export class AuthService {
       throw new BadRequestException(error.detail);
     }
 
+    if (error.code === 'ER_DUP_ENTRY') {
+      throw new BadRequestException(error.sqlMessage);
+    }
+
     this.logger.error(error);
     throw new InternalServerErrorException('Unexpected error, check server logs');
   }

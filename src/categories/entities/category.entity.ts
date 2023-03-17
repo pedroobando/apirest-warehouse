@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'storage' })
-export class Storage {
+@Entity({ name: 'category' })
+export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -16,6 +16,9 @@ export class Storage {
 
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
+
+  @Column({ type: 'uuid', unique: false, nullable: false })
+  userId: string;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
   created_at: Date;

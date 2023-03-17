@@ -7,7 +7,7 @@ import { StorageController } from './storage.controller';
 import { AuthModule } from 'src/auth';
 
 @Module({
-  imports: [ConfigModule, TypeOrmModule.forFeature([Storage]), AuthModule],
+  imports: [ConfigModule, AuthModule, TypeOrmModule.forFeature([Storage])],
   controllers: [StorageController],
   providers: [StorageService],
   exports: [StorageService],

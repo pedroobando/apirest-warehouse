@@ -39,7 +39,6 @@ export class StorageController {
   }
 
   @Patch(':id')
-  @Auth(ValidRoles.admin)
   update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() updateStorageDto: UpdateStorageDto,
@@ -48,15 +47,13 @@ export class StorageController {
   }
 
   @Delete(':id')
+  @Auth(ValidRoles.admin, ValidRoles.superUser)
   remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.storageService.remove(id);
   }
 
   @Get('activated/:id')
-  activated(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-    @Body() isActive: { active: boolean },
-  ) {
-    return this.storageService.activated(id, isActive);
+  activated(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    return this.storageService.activated(id);
   }
 }

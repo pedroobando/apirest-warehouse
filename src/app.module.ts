@@ -6,11 +6,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { EnvConfiguration, JoiValidationSchema } from './config';
-import { CommonModule } from './common/common.module';
-import { StorageModule } from './storage/storage.module';
-import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common';
+import { StorageModule } from './storage';
+import { AuthModule } from './auth';
 import { Storage } from './storage/entities';
-import { SeedModule } from './seed/seed.module';
+import { SeedModule } from './seed';
+import { EndSitesModule } from './endsites';
+import { CategoriesModule } from './categories';
+import { ProductsModule } from './products';
 
 @Module({
   imports: [
@@ -37,12 +40,12 @@ import { SeedModule } from './seed/seed.module';
     }),
 
     CommonModule,
-
     StorageModule,
-
     AuthModule,
-
     SeedModule,
+    EndSitesModule,
+    CategoriesModule,
+    ProductsModule,
   ],
 })
 export class AppModule {}
