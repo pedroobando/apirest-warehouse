@@ -62,20 +62,17 @@ export class CategoriesService {
   }
 
   async findOne(term: string) {
+    let Category: Category = await this.findOneWithError(term);
+    if (!Category) {
+      throw new NotFoundException(`Category ${term.toString()} not found`, 'category_notfound');
+    }
+    return Category;
+  }
+
+  async findOneWithError(term: string) {
     let Category: Category;
     if (isUUID(term, '4')) {
       Category = await this.categoriesRepository.findOneBy({ id: term });
-    } else {
-      const queryBuilder = this.categoriesRepository.createQueryBuilder('cate');
-      Category = await queryBuilder
-        .where('LOWER(name) LIKE %:name%', {
-          name: term.toLowerCase(),
-        })
-        .getOne();
-    }
-    // not found
-    if (!Category) {
-      throw new NotFoundException(`Category with term ${term.toString()} not found`);
     }
     return Category;
   }

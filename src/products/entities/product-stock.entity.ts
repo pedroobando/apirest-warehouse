@@ -1,22 +1,31 @@
-import { ProductStock } from 'src/products/entities';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
+  Index,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'storage' })
-export class Storage {
+import { Product } from './product.entity';
+
+@Entity({ name: 'product_stocks' })
+export class ProductStock {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 200, unique: true, nullable: false })
-  name: string;
+  @ManyToOne(() => Product, (product) => product.stocks, { onDelete: 'CASCADE' })
+  product: Product;
 
-  @Column({ type: 'boolean', default: true })
-  isActive: boolean;
+  @Index({ unique: false })
+  @Column({ type: 'uuid', nullable: false })
+  storage: string;
+
+  @Column({ type: 'float', default: 0 })
+  stock: number;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
   created_at: Date;

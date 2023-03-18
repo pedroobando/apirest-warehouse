@@ -75,21 +75,18 @@ export class StorageService {
   }
 
   async findOne(term: string) {
+    let storage: Storage = await this.findOneWithError(term);
+    // not found
+    if (!storage) {
+      throw new NotFoundException(`Storage ${term.toString()} not found`, 'storage_notfound');
+    }
+    return storage;
+  }
+
+  async findOneWithError(term: string) {
     let storage: Storage;
     if (isUUID(term, '4')) {
       storage = await this.storageRepository.findOneBy({ id: term });
-    } else {
-      const queryBuilder = this.storageRepository.createQueryBuilder('storag');
-      storage = await queryBuilder
-        .where('LOWER(name) =:name', {
-          name: term.toLowerCase(),
-        })
-        .getOne();
-    }
-
-    // not found
-    if (!storage) {
-      throw new NotFoundException(`Storage with term ${term.toString()} not found`);
     }
     return storage;
   }
