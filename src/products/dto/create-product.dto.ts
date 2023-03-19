@@ -9,7 +9,7 @@ export class CreateProductDto {
   @IsString()
   @MinLength(10)
   @IsUUID()
-  category: string;
+  categoryId: string;
 
   @IsString()
   @MinLength(2)
@@ -19,7 +19,7 @@ export class CreateProductDto {
   @IsString()
   @IsOptional()
   @IsUUID()
-  storage: string;
+  storageId: string;
 
   @IsNumber()
   @IsOptional()

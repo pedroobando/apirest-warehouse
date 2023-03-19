@@ -1,3 +1,4 @@
+import { Storage } from 'src/storage/entities';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -5,7 +6,9 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinTable,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -20,9 +23,15 @@ export class ProductStock {
   @ManyToOne(() => Product, (product) => product.stocks, { onDelete: 'CASCADE' })
   product: Product;
 
-  @Index({ unique: false })
-  @Column({ type: 'uuid', nullable: false })
-  storage: string;
+  // @Index({ unique: false })
+  // @Column({ type: 'uuid', nullable: false })
+  // (storage) => storage.id,
+  @ManyToOne(() => Storage, (storage) => storage.id, { cascade: ['recover'] })
+  storage: Storage;
+  // @JoinTable()
+  // @Index({ unique: false })
+  // @Column({ type: 'uuid', nullable: false })
+  // storageId: string;
 
   @Column({ type: 'float', default: 0 })
   stock: number;

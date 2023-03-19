@@ -24,9 +24,12 @@ export class Product {
   name: string;
 
   // @OneToOne(() => Category, (category) => category.products)
-  @Index({ unique: false })
-  @Column({ type: 'uuid', nullable: false })
-  category: string;
+
+  // @OneToOne(() => Category, (category) => category.id)
+  // @Index({ unique: false })
+  // @Column({ type: 'uuid', nullable: false })
+  @ManyToOne(() => Category, (category) => category.products)
+  category: Category;
 
   @Index({ unique: true })
   @Column({ type: 'varchar', nullable: false })
@@ -62,15 +65,17 @@ export class Product {
 
   @BeforeInsert()
   checkSlugInsert() {
-    if (!this.slug) {
-      this.slug = this.name;
-    }
+    // if (!this.slug) {
+    //   this.slug = this.name;
+    // }
 
-    this.slug = this.slug.toLowerCase().replaceAll(' ', '_').replaceAll("'", '');
+    this.slug = this.name.toLowerCase().replaceAll(' ', '_').replaceAll("'", '');
   }
 
   @BeforeUpdate()
   checkSlugUpdate() {
-    this.slug = this.slug.toLowerCase().replaceAll(' ', '_').replaceAll("'", '');
+    this.checkSlugInsert();
+    // console.log('first');
+    // this.slug = this.slug.toLowerCase().replaceAll(' ', '_').replaceAll("'", '');
   }
 }

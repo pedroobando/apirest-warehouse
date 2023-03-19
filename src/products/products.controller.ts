@@ -10,7 +10,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { CreateProductDto, PaginationProductDto, UpdateProductDto } from './dto';
+import { CreateProductDto, PaginationProductDto, StockProductDto, UpdateProductDto } from './dto';
 import { Auth, GetUser } from 'src/auth/decorators';
 import { User } from 'src/auth/entities';
 import { ValidRoles } from 'src/auth/interfaces';
@@ -51,8 +51,24 @@ export class ProductsController {
   }
 
   @Get('activated/:id')
-  @Auth(ValidRoles.admin, ValidRoles.delivery)
+  @Auth(ValidRoles.admin, ValidRoles.superUser)
   activated(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @GetUser() user: User) {
     return this.productsService.activated(id, user);
+  }
+
+  @Patch('stock/:id')
+  updateStock(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() stockProductDto: StockProductDto,
+  ) {
+    return this.productsService.updateStock(id, stockProductDto);
+  }
+
+  @Delete('stock/:id')
+  removeStock(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() stockProductDto: StockProductDto,
+  ) {
+    return this.productsService.removeStock(id, stockProductDto);
   }
 }

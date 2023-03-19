@@ -16,11 +16,13 @@ export class Category {
   @Column({ type: 'varchar', length: 200, unique: true, nullable: false })
   name: string;
 
-  // @OneToMany(() => Product, (product) => product.category, {
+  // {
   //   cascade: true,
   //   eager: true,
-  // })
-  // products: Product[];
+  // }
+
+  @OneToMany(() => Product, (product) => product.category)
+  products: Product[];
 
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
