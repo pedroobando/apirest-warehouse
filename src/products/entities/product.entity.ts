@@ -1,6 +1,6 @@
-import { User } from 'src/auth/entities';
 import { Category } from 'src/categories/entities';
 import {
+  AfterUpdate,
   BeforeInsert,
   BeforeUpdate,
   Column,
@@ -78,4 +78,7 @@ export class Product {
     // console.log('first');
     // this.slug = this.slug.toLowerCase().replaceAll(' ', '_').replaceAll("'", '');
   }
+
+  @AfterUpdate()
+  updateProductStock() {}
 }

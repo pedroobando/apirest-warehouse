@@ -14,6 +14,7 @@ import { SeedModule } from './seed';
 import { EndSitesModule } from './endsites';
 import { CategoriesModule } from './categories';
 import { ProductsModule } from './products';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ProductsModule } from './products';
     EndSitesModule,
     CategoriesModule,
     ProductsModule,
+    DocumentsModule,
   ],
 })
 export class AppModule {}

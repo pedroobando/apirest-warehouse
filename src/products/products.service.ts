@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
 import { User } from 'src/auth/entities';
 import { CategoriesService } from 'src/categories';
-// import { Category } from 'src/categories/entities';
+
 import { StorageService } from 'src/storage';
 import { DataSource, Repository } from 'typeorm';
 import { PaginationProductDto, StockProductDto } from './dto';
